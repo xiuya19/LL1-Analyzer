@@ -21,3 +21,7 @@ PRODUCTION:产生式集合，用","隔开
 {B,C,E}  
 E  
 {E->aBBd,B->eCf,C->d|$}  
+
+点击"选择文件"，上传语法文件  
+随后会自动生成FIRST集和FOLLOW集  
+把要分析的语句填入input中，点击分析即可得到分析栈
