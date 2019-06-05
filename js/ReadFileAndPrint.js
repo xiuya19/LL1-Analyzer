@@ -23,8 +23,8 @@ readFiles=function(fileId,target,callback){
      }
 };
 saveInSessionStorage=function(grammer){
-    window.sessionStorage.setItem("Grammer",grammer);
+    window.sessionStorage.setItem("Grammar",grammer);
 };
-grammerPrintf=function(result){
+grammarPrintf=function(result){
     return result;
 };

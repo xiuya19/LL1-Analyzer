@@ -1,5 +1,8 @@
 class DivTable{
     constructor(options){
+        /*
+        * ColumnRatio:列比例，数组形式
+        * ColumnBaseSize:列初始大小*/
         this.Row=options.Row;
         this.Col=options.Col;
         this.ColumnRatio=options.ColumnRatio;
