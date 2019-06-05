@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <script type="text/javascript" src="./js/require.js" defer async="true"></script>   -->
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/index.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="mains">
+            <div class="title">
+                <p>LL(1)分析器</p>
+            </div>
+
+            <div class="contentLeft">
+                <div class="controller" >
+                    <input type="file" id="f1" value="选择文法文件">
+                    <label for="partten">需要分析的语句<input type="text" id="partten"></label>
+                    <input type="button" id="analyse" value="分析">
+                </div>
+                <div class="resultTop">
+                    <div class="resultTopDiv resultTopDivL">
+                        <p>文法</p>
+                        <div></div>
+                    </div>
+                    <div class="resultTopDiv  resultTopDivR">
+                        <p>FIRST集</p>
+                        <div></div>
+                    </div>
+                    <!--<div class="resultTopDiv  resultTopDivL">-->
+                        <!--<p>消除回溯和左递归后的文法</p>-->
+                        <!--<div></div>-->
+                    <!--</div>-->
+
+
+                    <div class="resultTopDiv  resultTopDivR">
+                        <p>FOLLOW集</p>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="resultBottom">
+                    <div class="resultBottomDiv">
+                        <p>LL(1)分析表</p>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="contentRight">
+                <div class="resultRightDiv" >
+                    <p>分析过程</p>
+                    <div></div>
+                </div >
+            </div>
+        </div>
+        <script type="text/javascript" src="js/ReadFileAndPrintf.js"></script>
+        <script type="text/javascript" src="js/FirstAndFollow.js"></script>
+        <script type="text/javascript" src="js/deepCopy.js"></script>
+        <script type="text/javascript" src="js/DivTable.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>
