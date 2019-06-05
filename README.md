@@ -1,5 +1,6 @@
 # LL1-Analyzer
-Compilation principle，LL1，javasciprt
+Compilation principle，LL1，javasciprt  
+编译原理实验，实现词法分析器，LL1文法
 
 先创建文法文件，命名任意（不可为中文）  
 
