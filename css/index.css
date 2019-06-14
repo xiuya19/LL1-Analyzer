@@ -1,5 +1,4 @@
-
-.mains{
+.mainsLL1{
     width: 1250px;
     height: 950px;
     border: 1px solid #000;
@@ -8,6 +7,7 @@
     box-shadow: 7px 7px 7px #BCBCBC;
     box-sizing: border-box;
     border-radius: 5px;
+    display: none;
 }
 .title{
     height: 50px;
@@ -39,42 +39,43 @@
     background-color: #F2F2F2;
     margin-left: 10px;
 }
-.controller input[type='button']{
+.controller label{
+    margin-top: 5px;
+}
+.controller label,#analyseLL1{
     float:right;
     margin-right: 10px;
 }
 .controller input{
-    margin-top:15px ;
+    margin-top:15px;
 }
-#f1{
+.controller div{
     float: left;
-    margin-left:10px;
+    margin-left: 10px;
 }
 .resultTop{
     width: 690px;
     height: 440px;
     margin-left: 10px;
+    flex-wrap: wrap;
+    display: flex;
+}
+.resultTop p,.resultBottom p{
+    text-align: center;
 }
 .resultTopDiv{
-    margin-top: 20px;
-}
-.resultTopDivL{
-    float: left;
-}
-.resultTopDivR{
-    float: right;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 .resultTopDiv>div{
     width: 330px;
-    height: 180px;
+    height: 190px;
     background-color: #FFFFFF;
     border: 1px solid #000;
     box-shadow: 7px 7px 7px #BCBCBC;
     overflow:auto;
     box-sizing: border-box;
-}
-.resultTopDivL div{
-    height: 400px;
+
 }
 .resultBottom{
     margin-left: 10px;
@@ -105,4 +106,57 @@
     overflow:auto;
     box-sizing: border-box;
 
+}
+
+.mainsDir{
+    width: 900px;
+    height: 700px;
+    border: 1px solid #000;
+    background-color: #E4E4E4;
+    margin: 20px auto;
+    box-shadow: 7px 7px 7px #BCBCBC;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.controllerDir {
+    width: 850px;
+    height: 60px;
+    background-color: #F2F2F2;
+    margin-left: 20px;
+    margin-top: 20px;
+    box-shadow: 2px 7px 7px #BCBCBC;
+}
+
+#generate,.controllerDir div:last-of-type,.controllerDir div:first-of-type{
+    float: left;
+    margin-top: 13px;
+    margin-left: 10px;
+}
+#analyseLex{
+    float: right;
+    margin-top: 13px;
+    margin-right: 10px;
+}
+.fileButton{
+    display: none;
+}
+.contentDir{
+    width: 870px;
+    height: 550px;
+    display: flex;
+    margin-top: 10px;
+    margin-left: 15px;
+    flex-wrap: wrap;
+}
+
+.contentDir p{
+    text-align: center;
+}
+.contentDirDiv>div{
+    width: 420px;
+    height: 250px;
+    background-color: #FFFFFF;
+    box-shadow: 7px 7px 7px #BCBCBC;
+    margin-left: 10px;
+    overflow:auto;
 }

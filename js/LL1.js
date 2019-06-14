@@ -1,10 +1,34 @@
 
 class GRAMMAR{
     constructor(options){
-        this.originGrammar=options.split('\n');
-        this.initGrammar();
+        this.grammarString=options.split('\n');
+        this.type=0;
+        this.InitOriginGrammar();
+        this.CopyGrammar();
+        this.Judge();
+        // this.EliminateLeftRecursion();
+        // this.EliminateBacktracking();
     }
-    initGrammar(){
+    Judge(){
+        for(const index in this.Grammar.PROD){
+            let arr=this.Grammar.PROD[index];
+            let tar=[];
+            tar=connectArraySet(tar,arr);
+            if(tar.length!==arr.length){
+                this.type=1;//回溯
+                break;
+            }else if(tar.indexOf(index)>-1){
+                this.type=2;//左递归
+                break;
+            }else{
+                this.type=0;
+            }
+        }
+        if(this.type!==0){
+            alert("wrong grammar");
+        }
+    }
+    InitOriginGrammar(){
         /*
             分解语法
             VT:终结符
@@ -13,45 +37,79 @@ class GRAMMAR{
             PROD:产生式
         */
         let Partten=/\{(.*)\}/;
-        this.Grammar={};
-        let tmp=Partten.exec(this.originGrammar[0])[1].split(',');
-        this.Grammar.VT=Array.from(tmp);
+        this.originGrammar={};
+        let tmp=Partten.exec(this.grammarString[0])[1].split(',');
+        this.originGrammar.VT=Array.from(tmp);
 
-        tmp=Partten.exec(this.originGrammar[1])[1].split(',');
-        this.Grammar.VN=Array.from(tmp);
+        tmp=Partten.exec(this.grammarString[1])[1].split(',');
+        this.originGrammar.VN=Array.from(tmp);
 
-        this.Grammar.S=this.originGrammar[2][0];
+        this.originGrammar.S=this.grammarString[2][0];
 
-        tmp=Partten.exec(this.originGrammar[3])[1].split(',');
-        this.Grammar.PROD={};
+        tmp=Partten.exec(this.grammarString[3])[1].split(',');
+        this.originGrammar.PROD={};
         Array.from(tmp).forEach(nodes=>{
             let temp=nodes.split("->");
-            this.Grammar.PROD[temp[0]]=temp[1].split('|');
+            this.originGrammar.PROD[temp[0]]=temp[1].split('|');
         });
 
-        this.printGrammer="";
-        this.printGrammer=this.printGrammer.concat("VN:"+this.originGrammar[0]+"\n");
+        let index=this.originGrammar.VN.indexOf(this.originGrammar.S);
+        let temp=this.originGrammar.VN[0];
+        this.originGrammar.VN[0]=this.originGrammar.VN[index];
+        this.originGrammar.VN[index]=temp;
 
-        this.printGrammer=this.printGrammer.concat("VT:"+this.originGrammar[1]+"\n");
-        this.printGrammer=this.printGrammer.concat("S:"+this.originGrammar[2]+"\n");
-        this.printGrammer=this.printGrammer.concat("PRODUCT:\n"+this.originGrammar[3].split(',').join('\n'));
+        this.printGrammer="";
+        this.printGrammer=this.printGrammer.concat("VN:"+this.grammarString[0]+"\n");
+
+        this.printGrammer=this.printGrammer.concat("VT:"+this.grammarString[1]+"\n");
+        this.printGrammer=this.printGrammer.concat("S:"+this.grammarString[2]+"\n");
+        this.printGrammer=this.printGrammer.concat("PRODUCT:\n"+this.grammarString[3].split(',').join('\n'));
+    }
+    CopyGrammar(){
+        this.Grammar={};
+        this.Grammar.VT=[];
+        this.originGrammar.VT.forEach(value=>{
+            this.Grammar.VT.push(value);
+        });
+
+        this.Grammar.VN=[];
+        this.originGrammar.VN.forEach(value=>{
+            this.Grammar.VN.push(value);
+        });
+
+        this.Grammar.S=this.originGrammar.S;
+
+        this.Grammar.PROD={};
+        for(const index in this.originGrammar.PROD) {
+            this.Grammar.PROD[index] = [];
+            this.originGrammar.PROD[index].forEach(value=>{
+                this.Grammar.PROD[index].push(value);
+            });
+            this.Grammar.PROD[index].sort();
+        }
+
+    }
+    EliminateLeftRecursion(){
+
+    }
+    EliminateBacktracking(){
+
     }
 }
-
 class FIRST extends GRAMMAR{
     constructor(options){
         super(options);
-        this.initFirstSet();
-        this.initFirstTable();
+        this.InitFirstSet();
+        this.InitFirstTable();
     }
-    initFirstSet(){
-        this.First=initSetObj(this.Grammar.VN);
+    InitFirstSet(){
+        this.First=createObjectArray(this.Grammar.VN);
         this.Grammar.VN.forEach(nodes=>{
             if(this.First[nodes]==false)
-                this.getFirst(nodes);
+                this.GetFirst(nodes);
         })
     }
-    initFirstTable(){
+    InitFirstTable(){
         //生成二元表[终结符,first集]
         this.FirstTable=[];
         for(const key1 in this.First){
@@ -65,7 +123,7 @@ class FIRST extends GRAMMAR{
             this.FirstTable.push([key1].concat(temp));
         }
     }
-    getFirst(tar){
+    GetFirst(tar){
         //没有产生式的非终结符
         if(!this.Grammar.PROD.hasOwnProperty(tar))return [];
         this.Grammar.PROD[tar].forEach(node=>{
@@ -95,7 +153,7 @@ class FIRST extends GRAMMAR{
 
                     //如果没有其first集，则递归求；否则保存于tempFirst中
                     if(this.First[iter]==false){
-                        this.First[iter]=this.getFirst(iter);
+                        this.First[iter]=this.GetFirst(iter);
                     }
                     tempFirst=this.First[iter];
                     //遍历非终结符的first集合是否有空字
@@ -107,6 +165,7 @@ class FIRST extends GRAMMAR{
                                 continue;
                             }
                             let tempObj={[node]:value[key]};
+
                             if(this.First[tar].indexOf(tempObj)===-1)
                                 this.First[tar].push(tempObj);
                         }
@@ -129,20 +188,20 @@ class FIRST extends GRAMMAR{
 class FOLLOW extends FIRST{
     constructor(options){
         super(options);
-        this.initFollowSet();
-        this.initFollowTable();
+        this.InitFollowSet();
+        this.InitFollowTable();
     }
-    initFollowSet(){
-        this.Follow=initSetObj(this.Grammar.VN);
+    InitFollowSet(){
+        this.Follow=createObjectArray(this.Grammar.VN);
         this.Follow[this.Grammar.S]=['#'];
-        this.getFollow(this.Grammar.S);
+        this.GetFollow(this.Grammar.S);
         this.Grammar.VN.forEach(node=>{
             if(node!==this.Grammar.S||this.Follow[node]==false){
-                this.getFollow(node);
+                this.GetFollow(node);
             }
         })
     }
-    initFollowTable(){
+    InitFollowTable(){
         this.FollowTable=[];
         for(const key1 in this.Follow){
             let tmp=[];
@@ -153,7 +212,7 @@ class FOLLOW extends FIRST{
             this.FollowTable.push([key1].concat(tmp));
         }
     }
-    getFollow(tar){
+    GetFollow(tar){
         for(const key in this.Grammar.PROD){
             //遍历产生式右部
             let value=this.Grammar.PROD[key];
@@ -165,29 +224,29 @@ class FOLLOW extends FIRST{
                             if(tar!==key){
                                 //位于产生式最后且产生式左部不是自身时，则产生式左部的follow加入follow集
                                 if(this.Follow[key]==false){
-                                    this.Follow[key]=this.getFollow(key);
+                                    this.Follow[key]=this.GetFollow(key);
                                 }
-                                this.Follow[tar]=connectSet(this.Follow[tar],this.Follow[key]);
+                                this.Follow[tar]=connectArraySet(this.Follow[tar],this.Follow[key]);
                             }
                         }else{
                             let str=node1.substring(i+1);//截取用于求first集目标
-                            let tempFirst=this.getFirstInFollow(str);
+                            let tempFirst=this.GetFirstInFollow(str);
                             let index=tempFirst.indexOf('$');
                             if(index>-1){
                                 //first集合中有空字，则需要把则产生式左部的follow加入follow集
 
                                 tempFirst.splice(index,1);//删除空字
 
-                                this.Follow[tar]=connectSet(this.Follow[tar],tempFirst);
+                                this.Follow[tar]=connectArraySet(this.Follow[tar],tempFirst);
 
                                 if(tar!==key){
                                     if(this.Follow[key]==false){
-                                        this.Follow[key]=this.getFollow(key);
+                                        this.Follow[key]=this.GetFollow(key);
                                     }
-                                    this.Follow[tar]=connectSet(this.Follow[tar],this.Follow[key]);
+                                    this.Follow[tar]=connectArraySet(this.Follow[tar],this.Follow[key]);
                                 }
                             }else{
-                                this.Follow[tar]=connectSet(this.Follow[tar],tempFirst);
+                                this.Follow[tar]=connectArraySet(this.Follow[tar],tempFirst);
                             }
                         }
                     }
@@ -196,7 +255,7 @@ class FOLLOW extends FIRST{
         }
         return this.Follow[tar];
     }
-    getFirstInFollow(tar){
+    GetFirstInFollow(tar){
         let allowContinue=true;
         let result=[];
         for(const value of tar){
@@ -235,10 +294,10 @@ class FOLLOW extends FIRST{
 class TABLE extends FOLLOW{
     constructor(options){
         super(options);
-        this.initTable();
-        this.initTableList();
+        this.InitTable();
+        this.InitTableList();
     }
-    initTable(){
+    InitTable(){
         //分析表，去空格版，只有映射关系
         this.Table={};
         this.Grammar.VN.forEach(node=>{
@@ -259,7 +318,7 @@ class TABLE extends FOLLOW{
             })
         })
     }
-    initTableList(){
+    InitTableList(){
         //分析表,保留空格版，用于输出页面
         this.TableList=[];
         //第一行为空格+终结符集+#
@@ -315,20 +374,23 @@ class LL1 extends TABLE{
             }
         }
     }
+    MappingTable(tar){
+        this.mapTable=tar;
+    }
 }
 
-let initSetObj=function(tar){
+function createObjectArray(tar){
     let temp={};
     tar.forEach(nodes=>{
         temp[nodes]=[];
     });
     return temp;
-};
-let connectSet=function(src,tar){
+}
+function connectArraySet(src,tar){
     tar.forEach(value=>{
         if(src.indexOf(value)===-1){
             src.push(value);
         }
     });
     return src;
-};
+}

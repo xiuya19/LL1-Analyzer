@@ -7,13 +7,15 @@ class DivTable{
         this.Col=options.Col;
         this.ColumnRatio=options.ColumnRatio;
         this.ColumnBaseSize=options.ColumnBaseSize;
+        this.ClassName=options.className;
         this.data=options.data;
-        this.init();
+        this.InitData();
+        this.InitStyle();
     }
-    divPackage(str,callback){
-        return "<div "+callback()+">"+str+"</div>";
+    divPackage(str,className){
+        return "<div "+className+">"+str+"</div>";
     }
-    init(){
+    InitData(){
         this.table="";
         this.data.forEach(node1=>{
             let row="";
@@ -22,15 +24,29 @@ class DivTable{
             node1.forEach(node2=>{
                 ratio=this.ColumnRatio[index];
                 size=this.ColumnBaseSize[index++];
-                row=row.concat(this.divPackage(node2.toString(),function () {
-                    return "style=\"flex-grow:"+ratio+";width:"+size+";height:100%;border: 1px solid #000;box-sizing: border-box;\"";
-                }));
+                row=row.concat(this.divPackage(node2.toString(),""));
             });
-            row=this.divPackage(row,function () {
-                return "style=\"display:flex;height:28px;line-height: 28px;box-sizing: border-box;\"";
-            });
+            row=this.divPackage(row,"class=\""+this.ClassName+"\"");
             this.table=this.table.concat(row);
         });
         //this.table=this.divPackage(this.table);
     }
+    InitStyle(){
+        this.style={};
+        this.style["."+this.ClassName]="display:flex;height:28px;line-height:28px;box-sizing:border-box;text-align: center";
+        this.style["."+this.ClassName+" div"]="height:100%;border:1px solid #000;box-sizing:border-box";
+        for(let i=0;i<this.Col;i++){
+            this.style["."+this.ClassName+" div:nth-child("+(i+1)+")"]="flex-grow:"+
+                this.ColumnRatio[i]+";width:"+this.ColumnBaseSize[i];
+        }
+
+    }
+    showStyle(){
+        let result="";
+        for(const index in this.style){
+            result=result.concat(index.toString()+"{"+this.style[index]+"}");
+        }
+        return result;
+    }
 }
+

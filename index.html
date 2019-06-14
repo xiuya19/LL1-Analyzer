@@ -4,36 +4,85 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title></title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <script type="text/javascript" src="./js/require.js" defer async="true"></script>   -->
+        <meta name="viewport" content="width=device-width, Initial-scale=1">
+
         <link rel="stylesheet" href="css/base.css">
         <link rel="stylesheet" href="css/index.css">
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <div class="mains">
+        <input type="button" value="切换" id="change">
+
+        <div class="mainsDir">
+            <div class="title">
+                <p>词法分析器</p>
+            </div>
+            <div class="controllerDir">
+                <div>
+                    <input type="file" id="reservedWordFile" class="fileButton">
+                    <input type="button" value="词法表文件" id="reservedWordButton">
+                </div>
+                <div>
+                    <input type="file" id="attributeOperatorFile" class="fileButton">
+                    <input type="button" value="界符运算符文件" id="attributeOperatorButton">
+                </div>
+                <input type="button" value="分析" id="analyseLex">
+                <input type="button" value="生成词法表" id="generate">
+            </div>
+            <div class="contentDir">
+                <div class="contentDirDiv">
+                    <p>输入语句</p>
+                    <textarea name="" cols="52" rows="12" id="sentence"></textarea>
+                </div>
+                <div class="contentDirDiv">
+                    <p>标识符表</p>
+                    <div></div>
+                </div>
+                <div class="contentDirDiv">
+                    <p>词法表</p>
+                    <div></div>
+                </div>
+                <div class="contentDirDiv">
+                    <p>二元组</p>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <div class="mainsLL1">
             <div class="title">
                 <p>LL(1)分析器</p>
             </div>
 
             <div class="contentLeft">
                 <div class="controller" >
-                    <input type="file" id="f1" value="选择文法文件">
-                    <label for="partten">需要分析的语句<input type="text" id="partten"></label>
-                    <input type="button" id="analyse" value="分析">
+                    <div>
+                        <input type="file" id="grammarFile" class="fileButton">
+                        <input type="button" id="grammarButton" value="选择文法文件">
+                    </div>
+                    <!--<div>-->
+                        <!--<input type="file" id="grammarDirFile" class="fileButton">-->
+                        <!--<input type="button" id="grammarDirButton" value="选择映射文件">-->
+                    <!--</div>-->
+                    <input type="button" id="analyseLL1" value="分析">
+                    <!--<label for="ra"><input type="radio" name="a" checked="checked" id="ra" value="true">分析二元组</label>-->
+                    <!--<label for="rb"><input type="radio" name="a" id="rb">分析句子</label>-->
+
+                    <!--<label for="partten">需要分析的语句<input type="text" id="partten"></label>-->
+
                 </div>
                 <div class="resultTop">
-                    <div class="resultTopDiv resultTopDivL">
+                    <div class="resultTopDiv">
                         <p>文法</p>
                         <div></div>
                     </div>
-                    <div class="resultTopDiv  resultTopDivR">
+                    <div class="resultTopDiv">
+                        <p>输入二元组</p>
+                        <textarea name="" cols="40" rows="9"></textarea>
+                    </div>
+                    <div class="resultTopDiv">
                         <p>FIRST集</p>
                         <div></div>
                     </div>
-                    <div class="resultTopDiv  resultTopDivR">
+                    <div class="resultTopDiv">
                         <p>FOLLOW集</p>
                         <div></div>
                     </div>
@@ -53,9 +102,10 @@
             </div>
         </div>
         <script type="text/javascript" src="js/LL1.js"></script>
-        <script type="text/javascript" src="js/ReadFileAndPrint.js"></script>
-        <script type="text/javascript" src="js/deepCopy.js"></script>
-        <script type="text/javascript" src="js/DivTable.js"></script>
+        <script type="text/javascript" src="js/ReadFile.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/lexicalAnalysis.js"></script>
+        <script type="text/javascript" src="js/DivTable.js"></script>
+        <script type="text/javascript" src="js/deepCopy.js"></script>
     </body>
 </html>
